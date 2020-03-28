@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id "maven"
+    id "org.springframework.boot" version "2.1.5.RELEASE"
+}
+apply plugin: 'io.spring.dependency-management'
+
+group 'com.ly'
+version '1.0.0-SNAPSHOT'
+description = 'store-server'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    maven{
+        url = 'https://maven.aliyun.com/repository/public'
+    }
+
+    maven {
+        url = 'https://repo.spring.io/milestone'
+    }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.6'
+    annotationProcessor 'org.projectlombok:lombok:1.18.6'
+
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile('org.springframework.boot:spring-boot-starter-log4j2')
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.5'
+
+    compile 'mysql:mysql-connector-java:5.1.29'
+    compile 'com.alibaba:druid:1.1.12'
+    compile 'com.alibaba:fastjson:1.2.58'
+    compile 'com.baomidou:mybatis-plus-boot-starter:3.1.1'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    compile ('io.springfox:springfox-swagger2:2.9.2'){
+        exclude group: 'io.swagger', module: 'swagger-models'
+    }
+    compile 'io.swagger:swagger-models:1.5.21'
+    compile 'io.springfox:springfox-swagger-ui:2.9.2'
+    compile 'com.github.xiaoymin:swagger-bootstrap-ui:1.9.3'
+    compile 'cn.hutool:hutool-all:4.5.10'
+    compile 'io.jsonwebtoken:jjwt:0.9.1'
+    compile 'net.sf.json-lib:json-lib:2.4:jdk15'
+    compile 'org.apache.httpcomponents:httpclient:4.5.6'
+}
+sourceSets.main.resources.srcDirs = ["src/main/java" , "src/main/resources"]
+
+configurations {
+    //remove default logger
+    all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
