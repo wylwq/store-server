@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @ClassName Swagger2
- * @Description: TODO
+ * @Description:
  * @Author ly
  * @Date 2020/3/28
  * @Version V1.0.0
