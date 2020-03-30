@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @ClassName AdminController
- * @Description: TODO
  * @Author ly
  * @Date 2020/3/28
  * @Version V1.0.0
