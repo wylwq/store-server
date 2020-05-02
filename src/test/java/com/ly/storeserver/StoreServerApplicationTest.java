@@ -1,10 +1,12 @@
 package com.ly.storeserver;
 
-import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * @Description:
@@ -18,5 +20,6 @@ public class StoreServerApplicationTest {
 
     @Test
     public void test01() {
+
     }
 }

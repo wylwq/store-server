@@ -1,3 +1,21 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.5.RELEASE'
+    }
+    repositories {
+        mavenLocal()
+        maven{
+            url = 'https://maven.aliyun.com/repository/public'
+        }
+
+        maven {
+            url = 'https://repo.spring.io/milestone'
+        }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
 plugins {
     id 'java'
     id "maven"
@@ -32,7 +50,7 @@ dependencies {
     compile 'mysql:mysql-connector-java:5.1.29'
     compile 'com.alibaba:druid:1.1.12'
     compile 'com.alibaba:fastjson:1.2.58'
-    compile 'com.baomidou:mybatis-plus-boot-starter:3.3.0'
+    compile 'com.baomidou:mybatis-plus-boot-starter:3.1.1'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     compile ('io.springfox:springfox-swagger2:2.9.2'){
         exclude group: 'io.swagger', module: 'swagger-models'
@@ -44,6 +62,9 @@ dependencies {
     compile 'io.jsonwebtoken:jjwt:0.9.1'
     compile 'net.sf.json-lib:json-lib:2.4:jdk15'
     compile 'org.apache.httpcomponents:httpclient:4.5.6'
+    compile 'org.aspectj:aspectjweaver:1.9.2'
+    compile 'org.apache.commons:commons-lang3:3.8.1'
+    compile "org.flywaydb:flyway-core:5.2.1"
 }
 sourceSets.main.resources.srcDirs = ["src/main/java" , "src/main/resources"]
 

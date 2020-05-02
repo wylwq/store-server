@@ -1,6 +1,6 @@
 package com.ly.storeserver.admin.mapper;
 
-import com.ly.storeserver.admin.entity.Sysuser;
+import com.ly.storeserver.admin.models.entity.Sysuser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
