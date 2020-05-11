@@ -1,0 +1,23 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: c_mysql
+    ports:
+      - "3307:3306"
+    volumes:
+      - /root/docker/mysql/data:/var/lib/mysql
+    restart: always
+    command: [
+      '--character-set-server=utf8' #设置数据库表的数据集
+    ]
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456  # 设置root用户的密码
+      MYSQL_ROOT_HOST: '%'
+  app:
+    image: store_mysql
+    container_name: s_store
+    depends_on:
+      - mysql
+    ports:
+      - "10080:10080"
