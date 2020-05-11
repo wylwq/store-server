@@ -6,6 +6,8 @@ services:
     ports:
       - "3307:3306"
     volumes:
+      - /root/docker/mysql/conf:/etc/mysql/conf.d
+      - /root/docker/mysql/logs:/logs
       - /root/docker/mysql/data:/var/lib/mysql
     restart: always
     command: [
@@ -21,3 +23,5 @@ services:
       - mysql
     ports:
       - "10080:10080"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
