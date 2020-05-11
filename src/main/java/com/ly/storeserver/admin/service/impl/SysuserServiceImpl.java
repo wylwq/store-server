@@ -179,7 +179,11 @@ public class SysuserServiceImpl extends ServiceImpl<SysuserMapper, Sysuser> impl
         Sysuser sysuser = sysuserMapper.selectById(id);
         if (sysuser == null) throw new ServiceException("用户不存在,更新失败~", RStatus.FAIL);
         BeanUtils.copyProperties(userRequest, sysuser);
-        saveOrUpdate(sysuser);
+        if (userRequest.getId() == null) {
+            save(sysuser);
+            return;
+        }
+        sysuserMapper.updateById(sysuser);
     }
 
     @Override

@@ -107,6 +107,7 @@ public class StoreServiceImpl extends ServiceImpl<StoreMapper, Store> implements
     @Override
     public StoreResponse queryStoreById(Integer id) {
         Store store = storeMapper.selectById(id);
+        if (store == null) throw new ServiceException("商品不存在~", RStatus.FAIL);
         return getStoreResponse(store);
     }
 

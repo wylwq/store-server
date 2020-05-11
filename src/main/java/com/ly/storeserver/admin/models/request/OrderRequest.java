@@ -14,8 +14,11 @@ import java.util.List;
 @Data
 public class OrderRequest {
 
-    @ApiModelProperty(value = "订单支付总金额")
+    @ApiModelProperty(value = "订单支付金额")
     private Long orderAmount;
+
+    @ApiModelProperty(value = "订单实付金额")
+    private Long orderRealAmount;
 
     @ApiModelProperty(value = "买家联系电话")
     private String userPhone;

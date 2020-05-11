@@ -1,7 +1,5 @@
 package com.ly.storeserver.admin.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -11,13 +9,15 @@ import com.ly.storeserver.admin.mapper.OrderItemMapper;
 import com.ly.storeserver.admin.mapper.OrderMainMapper;
 import com.ly.storeserver.admin.models.entity.OrderItem;
 import com.ly.storeserver.admin.models.entity.OrderMain;
+import com.ly.storeserver.admin.models.entity.Store;
 import com.ly.storeserver.admin.models.request.Cart;
 import com.ly.storeserver.admin.models.request.OrderQueryRequest;
 import com.ly.storeserver.admin.models.request.OrderRequest;
-import com.ly.storeserver.admin.models.response.OrderItemResponse;
-import com.ly.storeserver.admin.models.response.OrderMainResponse;
-import com.ly.storeserver.admin.models.response.OrderStatisticResponse;
+import com.ly.storeserver.admin.models.response.*;
+import com.ly.storeserver.admin.service.CustomService;
+import com.ly.storeserver.admin.service.OrderAsyncService;
 import com.ly.storeserver.admin.service.OrderMainService;
+import com.ly.storeserver.admin.service.StoreService;
 import com.ly.storeserver.common.bean.RPage;
 import com.ly.storeserver.common.enums.OrderEnums;
 import com.ly.storeserver.common.enums.PayEnums;
@@ -25,6 +25,7 @@ import com.ly.storeserver.common.enums.RStatus;
 import com.ly.storeserver.exception.ServiceException;
 import com.ly.storeserver.utils.IdWorker;
 import com.ly.storeserver.utils.ParamValidUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +34,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -43,10 +46,8 @@ import java.util.stream.Collectors;
  * @since 2020-04-26 21:41
  */
 @Service
+@Slf4j
 public class OrderMainServiceImpl extends ServiceImpl<OrderMainMapper, OrderMain> implements OrderMainService {
-
-    @Autowired
-    private IdWorker idWorker;
 
     @Autowired
     private ParamValidUtil paramValidUtil;
@@ -57,45 +58,52 @@ public class OrderMainServiceImpl extends ServiceImpl<OrderMainMapper, OrderMain
     @Autowired
     private OrderItemMapper orderItemMapper;
 
+    @Autowired
+    private CustomService customService;
+
+    @Autowired
+    private StoreService storeService;
+
+    @Autowired
+    private OrderAsyncService orderAsyncService;
+
+    /**
+     * 异步下单
+     * @param orderRequest
+     */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void commitOrder(OrderRequest orderRequest) {
         paramValidUtil.valid(orderRequest);
-        String userPhone = orderRequest.getUserPhone();
-        Integer payType = orderRequest.getPayType();
-        String orderAddress = orderRequest.getOrderAddress();
-        Long orderAmount = orderRequest.getOrderAmount();
-        String operation = orderRequest.getOperation();
-        List<Cart> cartList = orderRequest.getCartList();
-        OrderMain orderMain = new OrderMain();
-        orderMain.setOrderNo(String.valueOf(idWorker.nextId()));
-        orderMain.setOperation(operation);
-        orderMain.setOrderAddress(orderAddress);
-        orderMain.setOrderAmount(orderAmount);
-        orderMain.setOrderStatus(OrderEnums.NO_SEND.getStatus());
-        orderMain.setPayStatus(PayEnums.NO_PAY.getStatus());
-        orderMain.setPayType(payType);
-        orderMain.setUserPhone(userPhone);
-        int orderMainId = orderMainMapper.insert(orderMain);
-        saveOrderItem(orderMainId, cartList);
-
-    }
-
-    private void saveOrderItem(Integer orderMainId, List<Cart> cartList) {
-        cartList.forEach(cart -> {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setGoodsId(cart.getGoodsId());
-            orderItem.setGoodsName(cart.getGoodsName());
-            orderItem.setGoodsPrice(cart.getGoodsPrice());
-            orderItem.setOrderItemNo(String.valueOf(idWorker.nextId()));
-            orderItem.setOrderMainId(Long.valueOf(orderMainId));
-            orderItem.setGoodsNum(cart.getGoodsNum());
-            orderItem.setGoodsTotal(cart.getGoodsTotal());
-            orderItem.setOrderItemStatus(OrderEnums.NO_SEND.getStatus());
-            orderItemMapper.insert(orderItem);
+        validData(orderRequest);
+        CompletableFuture.runAsync(() -> {
+            try {
+                orderAsyncService.postCommit(orderRequest);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
         });
-
     }
+
+    private void validData(OrderRequest orderRequest) {
+        String userPhone = orderRequest.getUserPhone();
+        //校验下单客户是否存在
+        customService.findOneCustom(userPhone);
+        List<Cart> cartList = orderRequest.getCartList();
+        cartList.forEach(cart -> {
+            Long goodsId = cart.getGoodsId();
+            log.info("下单用户手机号{}，下单的商品{}", userPhone, goodsId);
+            if (goodsId == null) throw new ServiceException("商品id不存在~", RStatus.FAIL);
+            StoreResponse storeResponse = storeService.queryStoreById(goodsId.intValue());
+            Integer storeNum = storeResponse.getStoreNum();
+            Integer goodsNum = cart.getGoodsNum();
+            if (storeNum < goodsNum) {
+                String format = MessageFormat.format("预定失败，当前商品库存为{0}", storeNum);
+                throw new ServiceException(format, RStatus.FAIL);
+            }
+        });
+    }
+
+
 
     @Override
     public RPage<OrderMainResponse> queryOrderList(OrderQueryRequest orderQueryRequest) {
@@ -201,8 +209,8 @@ public class OrderMainServiceImpl extends ServiceImpl<OrderMainMapper, OrderMain
     }
 
     @Override
-    public Map<String, Long> statisticsOrder() {
-        Map<String, Long> map = new HashMap<>();
+    public SortedMap<String, Long> statisticsOrder() {
+        SortedMap<String, Long> map = new TreeMap<>();
         LocalDate localDate = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         for (int i = 0; i < 7; i++) {
@@ -216,6 +224,7 @@ public class OrderMainServiceImpl extends ServiceImpl<OrderMainMapper, OrderMain
             }
         });
         orderStatisticResponses.clear();
+
         return map;
     }
 }

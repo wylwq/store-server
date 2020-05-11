@@ -4,7 +4,7 @@ spring:
   application:
     name: store-server
   profiles:
-    active: prod
+    active: dev
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/store?characterEncoding=UTF-8
     username: root
@@ -35,6 +35,7 @@ mybatis-plus:
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
   configuration:
     call-setters-on-nulls: true #开启map返回字段为空
+    cache-enabled: false
 lybs:
   jwt:
     secret: u47REBDLrxfd78s

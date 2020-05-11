@@ -3,6 +3,7 @@ package com.ly.storeserver.admin.service;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ly.storeserver.admin.models.entity.OrderMain;
+import com.ly.storeserver.admin.models.request.Cart;
 import com.ly.storeserver.admin.models.request.OrderQueryRequest;
 import com.ly.storeserver.admin.models.request.OrderRequest;
 import com.ly.storeserver.admin.models.response.OrderItemResponse;
@@ -12,6 +13,7 @@ import com.ly.storeserver.common.bean.RPage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 
 /**
  * @author ly
@@ -55,6 +57,6 @@ public interface OrderMainService extends IService<OrderMain> {
      * 销量统计接口
      * @return
      */
-    Map<String, Long> statisticsOrder();
+    SortedMap<String, Long> statisticsOrder();
 
 }

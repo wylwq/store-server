@@ -37,7 +37,7 @@ public class Swagger2 {
         apiKeyList.add(new ApiKey("token", "token", "header"));
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
-                        .termsOfServiceUrl("github.wylwq.store-server")
+                        //.termsOfServiceUrl("github.wylwq.store-server")
                         .version("1.0.0")//版本
                         .description("仓库管理系统 API")
                         .title("仓库管理系统后台-接口")
