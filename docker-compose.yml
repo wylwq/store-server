@@ -21,6 +21,8 @@ services:
     container_name: s_store
     depends_on:
       - mysql
+    volumes:
+      - /usr/local/app/java/store-server/dockercompose-zlog:/zlog/store-server
     ports:
       - "10080:10080"
     environment:
