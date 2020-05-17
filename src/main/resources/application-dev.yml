@@ -1,7 +1,12 @@
 server:
   port: 10080
-spring:
+master:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/store?characterEncoding=UTF-8
+    jdbcUrl: jdbc:mysql://localhost:3306/store?characterEncoding=UTF-8
+    username: root
+    password: 123456
+slave:
+  datasource:
+    jdbcUrl: jdbc:mysql://localhost:3306/store?characterEncoding=UTF-8
     username: root
     password: 123456

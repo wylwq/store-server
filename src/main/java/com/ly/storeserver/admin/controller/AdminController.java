@@ -13,6 +13,8 @@ import com.ly.storeserver.common.bean.RPage;
 import com.ly.storeserver.common.controller.BaseController;
 import com.ly.storeserver.common.bean.R;
 import com.ly.storeserver.common.enums.RStatus;
+import com.ly.storeserver.config.DbConfig;
+import com.ly.storeserver.config.DynamicDataSource;
 import com.ly.storeserver.exception.ServiceException;
 import com.ly.storeserver.utils.CodeUtil;
 import io.swagger.annotations.Api;
@@ -42,6 +44,7 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "登录", notes = "登录接口")
     @Token
     public R login(@RequestBody LoginRequest loginRequest) {
+        DbConfig.getDb();
         LoginResponse loginResponse = sysuserService.login(loginRequest);
         return new R<>(RStatus.SUCCESS, loginResponse);
     }

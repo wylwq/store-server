@@ -92,9 +92,7 @@ public class SysuserServiceImpl extends ServiceImpl<SysuserMapper, Sysuser> impl
         newSysuser.setUserPhone(userMobile);
         newSysuser.setUserName(userMobile);
         newSysuser.setPassword(passwordEncoder.encode(password));
-        newSysuser.setDeleted(0);
         newSysuser.setAdminFlag("普通员工");
-        newSysuser.setVersion(1);
         save(newSysuser);
     }
 
@@ -119,8 +117,6 @@ public class SysuserServiceImpl extends ServiceImpl<SysuserMapper, Sysuser> impl
         Sysuser sysuser = new Sysuser();
         BeanUtils.copyProperties(userRequest, sysuser);
         sysuser.setPassword(passwordEncoder.encode(password));
-        sysuser.setDeleted(0);
-        sysuser.setVersion(1);
         save(sysuser);
     }
 

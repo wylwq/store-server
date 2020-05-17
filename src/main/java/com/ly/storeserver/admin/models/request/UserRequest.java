@@ -24,9 +24,6 @@ public class UserRequest {
     @ApiModelProperty(value = "用户手机号")
     private String userPhone;
 
-    @ApiModelProperty(value = "用户登录密码")
-    private String password;
-
     @ApiModelProperty(value = "用户年龄")
     private Integer userAge;
 
