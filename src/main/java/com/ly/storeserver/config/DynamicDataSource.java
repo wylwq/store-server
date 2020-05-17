@@ -14,7 +14,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        log.info("所使用的的数据源节点是：{}", DbConfig.getDb());
-        return DbConfig.getDb();
+        log.info("所使用的的数据源节点是：{}", DbConfig.get());
+        return DbConfig.get();
     }
 }

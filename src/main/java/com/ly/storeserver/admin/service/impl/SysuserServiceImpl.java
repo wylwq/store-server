@@ -16,6 +16,7 @@ import com.ly.storeserver.admin.models.response.LoginResponse;
 import com.ly.storeserver.admin.models.response.UserResponse;
 import com.ly.storeserver.admin.service.SysuserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ly.storeserver.common.annotation.MysqlSlave;
 import com.ly.storeserver.common.bean.RPage;
 import com.ly.storeserver.common.constant.YPConstants;
 import com.ly.storeserver.common.enums.RStatus;
@@ -121,7 +122,8 @@ public class SysuserServiceImpl extends ServiceImpl<SysuserMapper, Sysuser> impl
     }
 
     @Override
-    public RPage<UserResponse> userList(UserQueryRequest userQueryRequest) {
+    @MysqlSlave
+    public RPage<UserResponse> findUserList(UserQueryRequest userQueryRequest) {
         Integer pageSize = userQueryRequest.getPageSize();
         Integer pageNumber = userQueryRequest.getPageNumber();
         if (pageSize == null || pageSize <= 0) {

@@ -34,11 +34,9 @@ import java.util.concurrent.TimeUnit;
 @Aspect
 @Component
 @Slf4j
-public class RateLimteAop {
+public class RateLimteAop extends BaseAop{
 
     private Map<String, RateLimiter> curMap = new ConcurrentHashMap<>();
-
-
 
     @Pointcut("execution(public * com.ly.storeserver.admin.controller.*.*(..))")
     public void roundLimteAop() {
@@ -76,7 +74,6 @@ public class RateLimteAop {
 
     @Deprecated
     private void fallBack() {
-
         HttpServletResponse response = getResponse();
         response.setHeader("Content-Type", "text/html;charset=utf-8");
         try(PrintWriter writer = response.getWriter()) {
@@ -84,21 +81,6 @@ public class RateLimteAop {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private Method getMethod(ProceedingJoinPoint proceedingJoinPoint) {
-        MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
-        return methodSignature.getMethod();
-    }
-
-    private HttpServletRequest getRequest() {
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        return requestAttributes.getRequest();
-    }
-
-    private HttpServletResponse getResponse() {
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        return requestAttributes.getResponse();
     }
 
     private String getRequestURI() {

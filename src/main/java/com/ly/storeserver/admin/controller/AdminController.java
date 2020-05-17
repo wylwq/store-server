@@ -44,7 +44,6 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "登录", notes = "登录接口")
     @Token
     public R login(@RequestBody LoginRequest loginRequest) {
-        DbConfig.getDb();
         LoginResponse loginResponse = sysuserService.login(loginRequest);
         return new R<>(RStatus.SUCCESS, loginResponse);
     }
@@ -83,7 +82,7 @@ public class AdminController extends BaseController {
     @PostMapping("userList")
     @ApiOperation(value = "获取用户列表", notes = "获取用户列表接口")
     public RPage userList(@RequestBody UserQueryRequest userQueryRequest) {
-        RPage<UserResponse> sysuserIPage = sysuserService.userList(userQueryRequest);
+        RPage<UserResponse> sysuserIPage = sysuserService.findUserList(userQueryRequest);
         return sysuserIPage;
     }
 

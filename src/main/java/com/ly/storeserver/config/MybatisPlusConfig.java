@@ -3,6 +3,7 @@ package com.ly.storeserver.config;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.ly.storeserver.common.enums.DBTypeEnum;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.plugin.Interceptor;
@@ -70,8 +71,8 @@ public class MybatisPlusConfig {
     public DynamicDataSource dynamicDataSource() {
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
         Map<Object, Object> map = new HashMap<>();
-        map.put(DbConfig.master, masterDataSource());
-        map.put(DbConfig.slave, slaveDataSource());
+        map.put(DBTypeEnum.MASTER, masterDataSource());
+        map.put(DBTypeEnum.SLAVE, slaveDataSource());
         //默认数据源
         dynamicDataSource.setDefaultTargetDataSource(masterDataSource());
         //可配置的数据源

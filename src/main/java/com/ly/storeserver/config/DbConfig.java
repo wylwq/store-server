@@ -1,5 +1,7 @@
 package com.ly.storeserver.config;
 
+import com.ly.storeserver.common.enums.DBTypeEnum;
+
 /**
  * @Description:
  * @Author ly
@@ -8,17 +10,21 @@ package com.ly.storeserver.config;
  **/
 public class DbConfig {
 
-    public static String master = "master";
+    private static ThreadLocal<DBTypeEnum> threadLocal = new ThreadLocal<>();
 
-    public static String slave = "slave";
-
-    private static ThreadLocal<String> threadLocal = new ThreadLocal<>();
-
-    public static void setDb(String db) {
-        threadLocal.set(db);
+    public static void set(DBTypeEnum dbTypeEnum) {
+        threadLocal.set(dbTypeEnum);
     }
 
-    public static String getDb() {
+    public static DBTypeEnum get() {
         return threadLocal.get();
+    }
+
+    public static void master() {
+        set(DBTypeEnum.MASTER);
+    }
+
+    public static void slave() {
+        set(DBTypeEnum.SLAVE);
     }
 }

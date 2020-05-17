@@ -11,6 +11,7 @@ import com.ly.storeserver.admin.models.request.CategoryRequest;
 import com.ly.storeserver.admin.models.response.CategoryResponse;
 import com.ly.storeserver.admin.service.CategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ly.storeserver.common.annotation.MysqlSlave;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

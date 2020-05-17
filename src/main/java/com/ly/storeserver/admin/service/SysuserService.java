@@ -46,7 +46,7 @@ public interface SysuserService extends IService<Sysuser> {
      * @param userQueryRequest
      * @return
      */
-    RPage<UserResponse> userList(UserQueryRequest userQueryRequest);
+    RPage<UserResponse> findUserList(UserQueryRequest userQueryRequest);
 
     /**
      * 编辑用户列表
