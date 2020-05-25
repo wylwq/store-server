@@ -41,6 +41,7 @@ public class CustomServiceImpl extends ServiceImpl<CustomMapper, Custom> impleme
         wrapper.eq(Custom::getCusPhone, cusPhone);
         Custom custom = getOne(wrapper);
         if (custom != null && customRequest.getId() == null) throw new ServiceException("该用户已经存在添加失败~", RStatus.FAIL);
+        if (custom == null) custom = new Custom();
         BeanUtils.copyProperties(customRequest, custom);
         if (custom.getId() == null) {
             customMapper.insert(custom);
