@@ -93,7 +93,7 @@ public class SysuserServiceImpl extends ServiceImpl<SysuserMapper, Sysuser> impl
         newSysuser.setUserPhone(userMobile);
         newSysuser.setUserName(userMobile);
         newSysuser.setPassword(passwordEncoder.encode(password));
-        newSysuser.setAdminFlag("普通员工");
+        newSysuser.setAdminFlag("员工管理,库存管理,订单管理,客户管理");
         save(newSysuser);
     }
 
