@@ -13,7 +13,7 @@ import static com.google.common.collect.Iterables.getFirst;
 
 /**
  * @Description: bean校验器
- * @Author ly
+ * @Author wangy
  * @Date 2020/4/10 19:11
  * @Version V1.0.0
  **/
