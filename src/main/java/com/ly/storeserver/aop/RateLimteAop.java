@@ -11,12 +11,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -38,12 +34,13 @@ public class RateLimteAop extends BaseAop{
 
     private Map<String, RateLimiter> curMap = new ConcurrentHashMap<>();
 
-    @Pointcut("execution(public * com.ly.storeserver.admin.controller.*.*(..))")
-    public void roundLimteAop() {
+    @Pointcut("execution(public * com.ly.storeserver.admin.controller.*.*(..)) " +
+              "|| execution(public * com.ly.storeserver.ext.open.controller.*.*(..))")
+    public void roundLimitAop() {
 
     }
 
-    @Around(value = "roundLimteAop()")
+    @Around(value = "roundLimitAop()")
     public Object doBefore(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         //1.判断请求方法上是否含有@Ratelimter注解
         Method method = getMethod(proceedingJoinPoint);
@@ -66,7 +63,7 @@ public class RateLimteAop extends BaseAop{
         }
         boolean tryAcquire = rateLimiter.tryAcquire(timeout, TimeUnit.MILLISECONDS);
         if (!tryAcquire) {
-            log.error("请稍后再试~");
+            log.error(RStatus.REQ_LIMIT.getMessage());
             throw new ServiceException(RStatus.REQ_LIMIT);
         }
         return proceedingJoinPoint.proceed();
