@@ -1,6 +1,5 @@
 package com.ly.storeserver.exception;
 
-import com.ly.storeserver.common.bean.R;
 import com.ly.storeserver.common.enums.RStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

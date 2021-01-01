@@ -7,13 +7,11 @@ import com.ly.storeserver.ext.open.handler.MethodProxyFactory;
 import com.ly.storeserver.ext.open.request.BaseRequest;
 import com.ly.storeserver.ext.open.response.BaseResponse;
 import com.ly.storeserver.ext.open.response.ReturnCode;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
@@ -24,7 +22,9 @@ import java.lang.reflect.InvocationTargetException;
  * @author : wangyu
  * @since :  2020/12/25/025 13:44
  */
-@RestController("/open-service/v1")
+@RestController
+@RequestMapping(value = "/open-service/v1")
+@Api(value = "对外开发API", tags = "对外开发API")
 public class OpenApiController {
 
     @Autowired

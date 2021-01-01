@@ -7,6 +7,7 @@ import com.ly.storeserver.admin.models.response.CustomResponse;
 import com.ly.storeserver.admin.service.CustomService;
 import com.ly.storeserver.common.bean.R;
 import com.ly.storeserver.common.bean.RPage;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/custom/")
+@Api(value = "客户API", tags = "客户API")
 public class CustomController {
 
     @Autowired

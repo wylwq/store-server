@@ -65,6 +65,7 @@ dependencies {
     compile 'org.aspectj:aspectjweaver:1.9.2'
     compile 'org.apache.commons:commons-lang3:3.8.1'
     compile "org.flywaydb:flyway-core:5.2.1"
+    compile 'com.google.zxing:core:3.3.1'
 }
 sourceSets.main.resources.srcDirs = ["src/main/java" , "src/main/resources"]
 

@@ -1,0 +1,56 @@
+package com.ly.storeserver.ext.pay.common.util.sign.encrypt;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.UnsupportedEncodingException;
+
+/**
+
+
+
+/**
+ * @author Actinia
+ * <pre>
+ * email hayesfu@qq.com
+ * create 2017 2017/11/27 0027
+ * </pre>
+ */
+public class SHA256 {
+
+    /**
+     * 签名字符串
+     *
+     * @param text          需要签名的字符串
+     * @param key           密钥
+     * @param inputCharset 编码格式
+     * @return 签名结果
+     */
+    public static String sign(String text, String key, String inputCharset) {
+        //拼接key
+        text = text + key;
+        try {
+            byte[] bytes = text.getBytes(inputCharset);
+            return DigestUtils.sha256Hex(bytes);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+     * 签名字符串
+     *
+     * @param text          需要签名的字符串
+     * @param sign          签名结果
+     * @param key           密钥
+     * @param inputCharset 编码格式
+     * @return 签名结果
+     */
+    public static boolean verify(String text, String sign, String key, String inputCharset) {
+        //判断是否一样
+        return StringUtils.equals(sign(text, key, inputCharset).toUpperCase(), sign.toUpperCase());
+    }
+
+}
