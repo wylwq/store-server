@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,6 +55,16 @@ public class GlobalControllerAdvice {
         Integer code = e.getCode();
         String msg = e.getMsg();
         return new R<>(code, msg);
+    }
+
+    /**
+     * 处理请求方式错误的验证
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public R httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        log.error("throw param validate exception,http method error:", e);
+        String message = e.getMethod();
+        return new R<>(RStatus.PARAMS_ERROR,"[" + message + "]是错误的请求方式");
     }
 
 }

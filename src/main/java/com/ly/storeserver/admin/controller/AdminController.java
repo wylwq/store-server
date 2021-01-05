@@ -43,7 +43,7 @@ public class AdminController extends BaseController {
     @PostMapping("login")
     @ApiOperation(value = "登录", notes = "登录接口")
     @Token
-    public R login(@RequestBody LoginRequest loginRequest) {
+    public R login(@RequestBody @Validated LoginRequest loginRequest) {
         LoginResponse loginResponse = sysuserService.login(loginRequest);
         return new R<>(RStatus.SUCCESS, loginResponse);
     }
@@ -74,7 +74,7 @@ public class AdminController extends BaseController {
 
     @PostMapping("saveUser")
     @ApiOperation(value = "添加用户", notes = "添加用户接口")
-    public R saveUser(@RequestBody @Validated UserRequest userRequest) {
+    public R saveUser(@RequestBody @Valid UserRequest userRequest) {
         sysuserService.saveUser(userRequest);
         return new R<>("添加用户成功");
     }

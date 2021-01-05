@@ -19,7 +19,8 @@ public enum RStatus {
     SERVER_ERROR(2001, "服务器内部错误"),
     PARAMS_ERROR(2002, "参数校验错误"),
     SEDN_CODE(2003, "验证码频率3次/小时"),
-    REQ_LIMIT(2004, "请求频率过快，请稍后再试~");
+    REQ_LIMIT(2004, "请求频率过快，请稍后再试~"),
+    ;
 
     private Integer code;
 
