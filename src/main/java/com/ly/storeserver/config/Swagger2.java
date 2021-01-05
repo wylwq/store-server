@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -36,17 +37,21 @@ public class Swagger2 {
         List<ApiKey> apiKeyList = new ArrayList<>();
         apiKeyList.add(new ApiKey("token", "token", "header"));
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(new ApiInfoBuilder()
-                        //.termsOfServiceUrl("github.wylwq.store-server")
-                        .version("1.0.0")//版本
-                        .description("仓库管理系统 API")
-                        .title("仓库管理系统后台-接口")
-                        .build())
+                .apiInfo(createApiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build()
                 .securitySchemes(apiKeyList);
+    }
+
+    private ApiInfo createApiInfo() {
+        return new ApiInfoBuilder()
+                .termsOfServiceUrl("github.wylwq.store-server")
+                .version("1.0.0")
+                .description("仓库管理系统 API")
+                .title("仓库管理系统后台-接口-新增内容在ext包下")
+                .build();
     }
 
 }

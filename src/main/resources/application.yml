@@ -40,3 +40,8 @@ lybs:
   jwt:
     secret: u47REBDLrxfd78s
     expiration: 5133600
+swagger:
+  basic:
+    enable: true
+    username: admin
+    password: 123456

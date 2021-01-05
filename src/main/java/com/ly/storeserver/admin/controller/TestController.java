@@ -3,6 +3,7 @@ package com.ly.storeserver.admin.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,8 +25,8 @@ import java.util.zip.ZipOutputStream;
 @Api(value = "测试相关API", tags = "测试相关API")
 public class TestController {
 
-    @RequestMapping("test-zip")
-    @ApiOperation(value = "下载zip压缩包", tags = "下载zip压缩包接口")
+    @PostMapping("test-zip")
+    @ApiOperation(value = "下载zip压缩包", notes = "下载zip压缩包接口")
     public void testZip(HttpServletResponse response) throws IOException {
         StringWriter sw = new StringWriter();
         sw.write("hello world");
