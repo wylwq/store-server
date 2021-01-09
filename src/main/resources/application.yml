@@ -36,6 +36,7 @@ mybatis-plus:
   configuration:
     call-setters-on-nulls: true #开启map返回字段为空
     cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 lybs:
   jwt:
     secret: u47REBDLrxfd78s
