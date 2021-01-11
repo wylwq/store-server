@@ -1,5 +1,6 @@
 package com.ly.storeserver.common.enums;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.Getter;
 
 /**
@@ -21,6 +22,7 @@ public enum PayEnums {
     /**
      * 支付状态
      */
+    @EnumValue
     private Integer status;
 
     /**
